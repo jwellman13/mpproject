@@ -43,6 +43,7 @@ public class BuildDebugLogger : MonoBehaviour
 
     private void OnGUI()
     {
+        GUI.contentColor = Color.black;
         GUILayout.BeginArea(new Rect(20, 20, 400, Screen.height));
         GUILayout.Label("\n" + string.Join("\n", logQueue.ToArray()));
         GUILayout.EndArea();
