@@ -9,10 +9,12 @@ public class PlayerMove : NetworkBehaviour
     [SerializeField] private float rotationSpeed = 250f;
     
     private Animator animator;
+    private AudioSource audioSource;
 
     private void Awake()
     {
         animator = GetComponentInChildren<Animator>();
+        audioSource = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -42,6 +44,7 @@ public class PlayerMove : NetworkBehaviour
         }
 
         float move = Mathf.Abs(dir.x) + Mathf.Abs(dir.z);
+        audioSource.volume = move;
         animator.SetFloat("Speed", move);
     }
 }
