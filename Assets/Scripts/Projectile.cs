@@ -27,7 +27,7 @@ public class Projectile : NetworkBehaviour
     private void OnTriggerEnter(Collider collider)
     {
         if (!IsOwner) return;
-        //ProjectileCollisionServerRpc();
+        ProjectileCollisionServerRpc();
         parent.DestroyServerRpc();
     }
 

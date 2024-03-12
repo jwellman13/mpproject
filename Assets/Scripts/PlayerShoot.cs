@@ -37,15 +37,9 @@ public class PlayerShoot : NetworkBehaviour
     public void DestroyServerRpc()
     {
         var goToDestroy = projectiles[0];
-        //var explosionPos = goToDestroy.transform;
-
         goToDestroy.GetComponent<NetworkObject>().Despawn();
         projectiles.Remove(goToDestroy);
         Destroy(goToDestroy);
-
-        //var instance = Instantiate(explosion, explosionPos.position, explosionPos.rotation);
-        //var instanceNetworkObject = instance.GetComponent<NetworkObject>();
-        //instanceNetworkObject.Spawn();
 
     }
     
