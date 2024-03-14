@@ -11,6 +11,8 @@ public class Projectile : NetworkBehaviour
     [SerializeField] ParticleSystem trail;
     [SerializeField] ParticleSystem explosion;
 
+    private Transform target;
+
     private float speed = 20f;
     // Start is called before the first frame update
     void Start()
@@ -21,12 +23,28 @@ public class Projectile : NetworkBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.position += Time.deltaTime * speed * transform.forward;
+
+        if (target == null)
+        {
+            transform.position += Time.deltaTime * speed * transform.forward;
+            target = parent.gameObject.GetComponent<SoftTargetting>().currentTarget;
+        }
+        else
+        {
+            transform.position = Vector3.MoveTowards(transform.position, target.position, speed * Time.deltaTime);
+        }
+    }
+
+    public void SetTarget(Transform currentTarget)
+    {
+        target = currentTarget;
     }
 
     private void OnTriggerEnter(Collider collider)
     {
         if (!IsOwner) return;
+        if (collider.gameObject.tag == "Target Collider") return;
+
         ProjectileCollisionServerRpc();
         parent.DestroyServerRpc();
     }

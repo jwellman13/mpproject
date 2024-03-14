@@ -28,6 +28,7 @@ public class PlayerShoot : NetworkBehaviour
         var instance = Instantiate(fireball, pos.position, pos.rotation);
         projectiles.Add(instance);
         instance.GetComponent<Projectile>().parent = this;
+        
         var instanceNetworkObject = instance.GetComponent<NetworkObject>();
         instanceNetworkObject.Spawn();
         
