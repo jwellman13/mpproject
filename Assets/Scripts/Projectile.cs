@@ -28,10 +28,16 @@ public class Projectile : NetworkBehaviour
         {
             transform.position += Time.deltaTime * speed * transform.forward;
             target = parent.gameObject.GetComponent<SoftTargetting>().currentTarget;
+            //target = new Vector3(targetPos.x, 1f, targetPos.z);
+
         }
         else
         {
-            transform.position = Vector3.MoveTowards(transform.position, target.position, speed * Time.deltaTime);
+            Vector3 pos = new Vector3(target.position.x, 1f, target.position.z);
+            Vector3 relativePos = target.position - transform.position;
+            Quaternion rot = Quaternion.LookRotation(relativePos, Vector3.up);
+            transform.rotation = rot;
+            transform.position = Vector3.MoveTowards(transform.position, pos, speed * Time.deltaTime);
         }
     }
 
@@ -43,7 +49,11 @@ public class Projectile : NetworkBehaviour
     private void OnTriggerEnter(Collider collider)
     {
         if (!IsOwner) return;
+        if (collider.gameObject.tag == "Ground") return;
         if (collider.gameObject.tag == "Target Collider") return;
+        if (collider.gameObject == parent.gameObject) return;
+
+        Debug.Log(collider.gameObject.name);
 
         ProjectileCollisionServerRpc();
         parent.DestroyServerRpc();

@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Wall
   - Target Collider
+  - Ground
   layers:
   - Default
   - TransparentFX
