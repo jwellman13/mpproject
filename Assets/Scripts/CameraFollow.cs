@@ -6,6 +6,7 @@ using Cinemachine;
 
 public class CameraFollow : NetworkBehaviour
 {
+    // This sets the Cinemachine camera to follow the active player
     public override void OnNetworkSpawn()
     {
         if (!IsOwner) return;

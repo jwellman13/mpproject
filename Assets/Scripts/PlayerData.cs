@@ -8,8 +8,17 @@ using UnityEngine.UI;
 
 public class PlayerData : NetworkBehaviour
 {
+    // This script manages the player's health and about 20 other
+    // things that it shouldn't do
     [SerializeField] private TextMeshProUGUI playerName;
     [SerializeField] private Image healthImage;
+    [SerializeField] private PlayerMove move;
+    [SerializeField] private PlayerShoot shoot;
+
+    //Yes, this is an incredibly lazy way to do this.
+    [SerializeField] AudioSource playerHit;
+    [SerializeField] AudioSource playerDeath;
+
 
     private NetworkVariable<float> netPlayerHealth = new NetworkVariable<float>
         (100f, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
@@ -20,6 +29,7 @@ public class PlayerData : NetworkBehaviour
 
     public override void OnNetworkSpawn()
     {
+        // Registers the player's name and starting health
         netPlayerName.Value = "Player: " + (OwnerClientId + 1);
         playerName.text = netPlayerName.Value.ToString();
         netPlayerHealth.OnValueChanged += OnHealthChanged;
@@ -35,13 +45,21 @@ public class PlayerData : NetworkBehaviour
     {
         Vector3 scale = healthImage.rectTransform.localScale;
         healthImage.rectTransform.localScale = new Vector3(current / 100, scale.y, scale.z);
+
+        playerHit.Play();
+
+        // Disables the shooting and movement when a player dies
+        if (current < 1f)
+        {
+            move.SetDeath();
+            shoot.SetDeath();
+            playerDeath.Play();
+        }
     }
 
     [ServerRpc(RequireOwnership = false)]
     public void TakeDamageServerRpc()
     {
-        Debug.Log(netPlayerName.Value + " has been hit!");
-        netPlayerHealth.Value -= 25f;
-        
+        netPlayerHealth.Value -= 25f;       
     }
 }

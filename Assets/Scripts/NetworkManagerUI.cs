@@ -7,6 +7,9 @@ using Unity.Netcode;
 
 public class NetworkManagerUI : MonoBehaviour
 {
+    // This sets up buttons to join or host a game along with disabling the 
+    // title screen after a button has been clicked
+
     [SerializeField] private Button serverBtn;
     [SerializeField] private Button hostBtn;
     [SerializeField] private Button clientBtn;

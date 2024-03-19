@@ -9,17 +9,25 @@ public class PlayerShoot : NetworkBehaviour
     [SerializeField] GameObject explosion;
     [SerializeField] Transform pos;
 
+    private bool isAlive = true;
     private List<GameObject> projectiles = new List<GameObject>();
 
     // Update is called once per frame
     void Update()
     {
         if (!IsOwner) return;
+        if (!isAlive) return;
+
         if (Input.GetKeyDown(KeyCode.Return))
         {
 
             FireServerRPC();
         }
+    }
+
+    public void SetDeath()
+    {
+        isAlive = false;
     }
 
     [ServerRpc]

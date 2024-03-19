@@ -7,9 +7,12 @@ public class PlayerMove : NetworkBehaviour
 {
     [SerializeField] private float moveSpeed = 5f;
     [SerializeField] private float rotationSpeed = 250f;
+    [SerializeField] private GameObject deathScreen;
     
     private Animator animator;
     private AudioSource audioSource;
+
+    public bool isAlive = true;
 
     private void Awake()
     {
@@ -30,6 +33,8 @@ public class PlayerMove : NetworkBehaviour
 
     void Move()
     {
+
+        if (!isAlive) return;
         float horizontal = Input.GetAxis("Horizontal");
         float vertical = Input.GetAxis("Vertical");
 
@@ -46,5 +51,13 @@ public class PlayerMove : NetworkBehaviour
         float move = Mathf.Abs(dir.x) + Mathf.Abs(dir.z);
         audioSource.volume = move;
         animator.SetFloat("Speed", move);
+    }
+
+    public void SetDeath()
+    {
+        isAlive = false;
+        animator.SetTrigger("Die");
+
+        deathScreen.SetActive(true);
     }
 }
