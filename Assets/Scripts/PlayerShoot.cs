@@ -25,8 +25,10 @@ public class PlayerShoot : NetworkBehaviour
     [ServerRpc]
     private void FireServerRPC()
     {
-        var instance = Instantiate(fireball, pos.position, pos.rotation);
+        GameObject instance = Instantiate(fireball, pos.position, pos.rotation);
         projectiles.Add(instance);
+        var passThroughTarget = GetComponent<SoftTargetting>().currentTarget;
+        instance.GetComponent<Projectile>().SetTarget(passThroughTarget);
         instance.GetComponent<Projectile>().parent = this;
         
         var instanceNetworkObject = instance.GetComponent<NetworkObject>();
@@ -37,6 +39,7 @@ public class PlayerShoot : NetworkBehaviour
     [ServerRpc(RequireOwnership = false)]
     public void DestroyServerRpc()
     {
+        if (projectiles[0] == null) return;
         var goToDestroy = projectiles[0];
         goToDestroy.GetComponent<NetworkObject>().Despawn();
         projectiles.Remove(goToDestroy);

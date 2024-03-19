@@ -11,6 +11,8 @@ public class NetworkManagerUI : MonoBehaviour
     [SerializeField] private Button hostBtn;
     [SerializeField] private Button clientBtn;
 
+    [SerializeField] private GameObject gameLaunchUI;
+
     private void Awake()
     {
         serverBtn.onClick.AddListener(() => 
@@ -21,11 +23,13 @@ public class NetworkManagerUI : MonoBehaviour
         hostBtn.onClick.AddListener(() =>
         {
             NetworkManager.Singleton.StartHost();
+            gameLaunchUI.SetActive(false);
         });
 
         clientBtn.onClick.AddListener(() =>
         {
             NetworkManager.Singleton.StartClient();
+            gameLaunchUI.SetActive(false);
         });
     }
 }

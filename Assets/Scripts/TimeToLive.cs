@@ -16,12 +16,12 @@ public class TimeToLive : NetworkBehaviour
     private void DestroyObjectServerRpc()
     {
         GetComponent<NetworkObject>().Despawn();
+        Destroy(gameObject);
     }
 
     private IEnumerator DestroyAfterDelay(float delay)
     {
         yield return new WaitForSeconds(delay);
         DestroyObjectServerRpc();
-        Destroy(gameObject);
     }
 }
